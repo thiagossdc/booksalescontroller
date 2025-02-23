@@ -1,0 +1,37 @@
+@{
+    Layout = "_Layout";
+}
+
+<form id="vendaForm">
+    <label for="tipoVenda">Tipo de Venda:</label>
+    <select id="tipoVenda" required>
+        <option value="Amazon">Amazon</option>
+        <option value="Direta">Direta</option>
+        <option value="Desconto Autor">Desconto Autor</option>
+    </select>
+
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" min="1" required>
+
+    <button type="submit" class="btn">Registrar</button>
+</form>
+
+<p id="mensagem"></p>
+
+<script>
+    document.getElementById("vendaForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let tipoVenda = document.getElementById("tipoVenda").value;
+        let quantidade = document.getElementById("quantidade").value;
+
+        fetch("/api/vendas/registrar", {
+            method: "POST",
+            body: new URLSearchParams({ tipoVenda, quantidade })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("mensagem").innerText = data.message;
+        });
+    });
+</script>

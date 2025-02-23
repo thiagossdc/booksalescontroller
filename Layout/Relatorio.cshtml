@@ -1,0 +1,44 @@
+@{
+    Layout = "_Layout";
+}
+
+<section class="container">
+    <h2>Relatório de Vendas</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo de Venda</th>
+                <th>Quantidade</th>
+                <th>Faturamento</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaVendas"></tbody>
+    </table>
+
+    <a href="/api/vendas/gerar-excel" class="btn">Baixar Relatório Excel</a>
+
+    <script>
+        function carregarRelatorio() {
+            fetch("/api/vendas/listar")
+            .then(response => response.json())
+            .then(data => {
+                let tabela = document.getElementById("tabelaVendas");
+                tabela.innerHTML = "";
+
+                data.forEach(venda => {
+                    let row = `<tr>
+                        <td>${venda.tipo}</td>
+                        <td>${venda.quantidade}</td>
+                        <td>R$ ${venda.faturamento.toFixed(2)}</td>
+                    </tr>`;
+                    tabela.innerHTML += row;
+                });
+            });
+        }
+
+        carregarRelatorio();
+    </script>
+
+    <a href="/GerarRelatorioExcel" class="btn">Baixar Relatório Excel</a>
+</section>
